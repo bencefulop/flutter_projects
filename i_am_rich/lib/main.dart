@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 void main() {
   runApp(
     MaterialApp(
-      // Removes 'debug' banner from emulator
-      debugShowCheckedModeBanner: false,
+      debugShowCheckedModeBanner: false, // Removes 'debug' banner from emulator
       home: Scaffold(
         backgroundColor: Colors.blueGrey,
         appBar: AppBar(
@@ -13,7 +12,7 @@ void main() {
         ),
         body: Center(
           child: Image(
-            image: NetworkImage('https://source.unsplash.com/random'),
+            image: AssetImage('images/diamond.png'),
           ),
         ),
       ),
