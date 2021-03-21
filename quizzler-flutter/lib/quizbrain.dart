@@ -1,7 +1,10 @@
 import 'question.dart';
 
 class QuizBrain {
-  List<Question> questionBank = [
+  int _questionNumber = 0;
+
+  // the _ before a variable makes it private. Can be read but not directly set.
+  List<Question> _questionBank = [
     Question('Some cats are actually allergic to humans', true),
     Question('You can lead a cow down stairs but not up stairs.', false),
     Question('Approximately one quarter of human bones are in the feet.', true),
@@ -12,7 +15,7 @@ class QuizBrain {
         'No piece of square dry paper can be folded in half more than 7 times.',
         false),
     Question(
-        'In London, UK, if you happen to die in the House of Parliament, you are technically entitled to a state funeral, because the building is considered too sacred a place.',
+        'In London, UK, if you happen to die in the House of Parliament, you are technically entitled to a state funeral, because the building is considered to be a sacred a place.',
         true),
     Question(
         'The loudest sound produced by any animal is 188 decibels. That animal is the African Elephant.',
@@ -28,4 +31,32 @@ class QuizBrain {
         'In West Virginia, USA, if you accidentally hit an animal with your car, you are free to take it home to eat.',
         true),
   ];
+
+  String getQuestionText() {
+    return _questionBank[_questionNumber].questionText;
+  }
+
+  bool getQuestionAnswer() {
+    return _questionBank[_questionNumber].questionAnswer;
+  }
+
+  void nextQuestion() {
+    if (_questionNumber < _questionBank.length - 1) {
+      _questionNumber++;
+    }
+  }
+
+  bool isFinished() {
+    if (_questionNumber == _questionBank.length - 1) {
+      print('quiz ended');
+      return true;
+    }
+  }
+
+  void reset() {
+    if (isFinished() == true) {
+      print('resetting...');
+      _questionNumber = 0;
+    }
+  }
 }
