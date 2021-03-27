@@ -32,27 +32,58 @@ class StoryBrain {
         choice1: 'Restart',
         choice2: '')
   ];
-  getStory() {
-    return _storyData[0].storyTitle;
+  String getStory() {
+    print(storyNumber);
+    return _storyData[storyNumber].storyTitle;
   }
 
-  getChoice1() {
-    return _storyData[0].choice1;
+  String getChoice1() {
+    return _storyData[storyNumber].choice1;
   }
 
-  getChoice2() {
-    return _storyData[0].choice2;
+  String getChoice2() {
+    return _storyData[storyNumber].choice2;
+  }
+
+  int storyNumber = 0;
+
+  void nextStory(int choiceNumber) {
+    switch (storyNumber) {
+      case 0:
+        {
+          if (choiceNumber == 1) {
+            storyNumber = 2;
+          } else {
+            storyNumber = 1;
+          }
+        }
+        break;
+
+      case 1:
+        {
+          if (choiceNumber == 1) {
+            storyNumber = 2;
+          } else {
+            storyNumber = 3;
+          }
+        }
+        break;
+
+      case 2:
+        {
+          if (choiceNumber == 1) {
+            storyNumber = 5;
+          } else {
+            storyNumber = 4;
+          }
+        }
+        break;
+    }
   }
 }
 //TODO: Step 23 - Use the storyNumber property inside getStory(), getChoice1() and getChoice2() so that it gets the updated story and choices rather than always just the first (0th) one.
 
 //TODO: Step 25 - Change the storyNumber property into a private property so that only story_brain.dart has access to it. You can do this by right clicking on the name (storyNumber) and selecting Refactor -> Rename to make the change across all the places where it's used.
-
-//TODO: Step 16 - Create a property called storyNumber which starts with a value of 0. This will be used to track which story the user is currently viewing.
-
-//TODO: Step 17 - Create a method called nextStory(), it should not have any outputs but it should have 1 input called choiceNumber which will be the choice number (int) made by the user.
-
-//TODO: Step 20 - Download the story plan here: https://drive.google.com/uc?export=download&id=1KU6EghkO9Hf2hRM0756xFHgNaZyGCou3
 
 //TODO: Step 21 - Using the story plan, update nextStory() to change the storyNumber depending on the choice made by the user. e.g. if choiceNumber was equal to 1 and the storyNumber is 0, the storyNumber should become 2.
 
