@@ -2,10 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'IconContent.dart';
 import 'ReusableCard.dart';
-
-const bottomContainerHeight = 80.0;
-const activeCardColour = Color(0xFF1D1E33);
-const inActiveCardColour = Color(0xFF111328);
+import 'constats.dart';
 
 enum Gender {
   male,
@@ -18,28 +15,28 @@ class InputPage extends StatefulWidget {
 }
 
 class _InputPageState extends State<InputPage> {
-  Color maleCardColour = inActiveCardColour;
-  Color femaleCardColour = inActiveCardColour;
+  Color maleCardColour = kInActiveCardColour;
+  Color femaleCardColour = kInActiveCardColour;
 
   void updateColour(Gender selectedGender) {
     selectedGender == Gender.male ? toggleMale() : toggleFemale();
   }
 
   void toggleMale() {
-    if (maleCardColour == inActiveCardColour) {
-      maleCardColour = activeCardColour;
-      femaleCardColour = inActiveCardColour;
+    if (maleCardColour == kInActiveCardColour) {
+      maleCardColour = kActiveCardColour;
+      femaleCardColour = kInActiveCardColour;
     } else {
-      maleCardColour = inActiveCardColour;
+      maleCardColour = kInActiveCardColour;
     }
   }
 
   void toggleFemale() {
-    if (femaleCardColour == inActiveCardColour) {
-      femaleCardColour = activeCardColour;
-      maleCardColour = inActiveCardColour;
+    if (femaleCardColour == kInActiveCardColour) {
+      femaleCardColour = kActiveCardColour;
+      maleCardColour = kInActiveCardColour;
     } else {
-      femaleCardColour = inActiveCardColour;
+      femaleCardColour = kInActiveCardColour;
     }
   }
 
@@ -50,6 +47,7 @@ class _InputPageState extends State<InputPage> {
         title: Text('BMI CALCULATOR'),
       ),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Expanded(
             child: Row(
@@ -82,18 +80,46 @@ class _InputPageState extends State<InputPage> {
             ),
           ),
           Expanded(
-            child: ReusableCard(colour: activeCardColour),
+            child: ReusableCard(
+              colour: kActiveCardColour,
+              cardChild: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'HEIGHT',
+                    style: kLabelTextStyle,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.baseline,
+                    textBaseline: TextBaseline.alphabetic,
+                    children: [
+                      Text(
+                        '180',
+                        style: kBoldText,
+                      ),
+                      Text(
+                        'cm',
+                        style: kLabelTextStyle,
+                      )
+                    ],
+                  ),
+                  // TODO: add slider values as per video 17m:10s
+                  // Slider(value: value, onChanged: onChanged)
+                ],
+              ),
+            ),
           ),
           Expanded(
             child: Row(
               children: [
                 Expanded(
                   child: ReusableCard(
-                    colour: activeCardColour,
+                    colour: kActiveCardColour,
                   ),
                 ),
                 Expanded(
-                  child: ReusableCard(colour: activeCardColour),
+                  child: ReusableCard(colour: kActiveCardColour),
                 ),
               ],
             ),
@@ -102,7 +128,7 @@ class _InputPageState extends State<InputPage> {
             color: Color(0xFFEB1555),
             margin: EdgeInsets.only(top: 10.0),
             width: double.infinity,
-            height: bottomContainerHeight,
+            height: kBottomContainerHeight,
           )
         ],
       ),
