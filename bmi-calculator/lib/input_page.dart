@@ -17,6 +17,7 @@ class InputPage extends StatefulWidget {
 class _InputPageState extends State<InputPage> {
   Color maleCardColour = kInActiveCardColour;
   Color femaleCardColour = kInActiveCardColour;
+  int height = 180;
 
   void updateColour(Gender selectedGender) {
     selectedGender == Gender.male ? toggleMale() : toggleFemale();
@@ -95,7 +96,7 @@ class _InputPageState extends State<InputPage> {
                     textBaseline: TextBaseline.alphabetic,
                     children: [
                       Text(
-                        '180',
+                        height.toString(),
                         style: kBoldText,
                       ),
                       Text(
@@ -104,8 +105,17 @@ class _InputPageState extends State<InputPage> {
                       )
                     ],
                   ),
-                  // TODO: add slider values as per video 17m:10s
-                  // Slider(value: value, onChanged: onChanged)
+                  Slider(
+                      value: height.toDouble(),
+                      min: 120,
+                      max: 220,
+                      activeColor: Color(0xFFEB1555),
+                      inactiveColor: Color(0xFF8D8E98),
+                      onChanged: (double newValue) {
+                        setState(() {
+                          height = newValue.round();
+                        });
+                      })
                 ],
               ),
             ),
