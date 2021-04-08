@@ -18,6 +18,7 @@ class _InputPageState extends State<InputPage> {
   Color maleCardColour = kInActiveCardColour;
   Color femaleCardColour = kInActiveCardColour;
   int height = 180;
+  int weight = 60;
 
   void updateColour(Gender selectedGender) {
     selectedGender == Gender.male ? toggleMale() : toggleFemale();
@@ -100,7 +101,7 @@ class _InputPageState extends State<InputPage> {
                         style: kBoldText,
                       ),
                       Text(
-                        '  cm',
+                        ' cm',
                         style: kLabelTextStyle,
                       )
                     ],
@@ -135,6 +136,58 @@ class _InputPageState extends State<InputPage> {
               children: [
                 Expanded(
                   child: ReusableCard(
+                    cardChild: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'WEIGHT',
+                          style: kLabelTextStyle,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.baseline,
+                          textBaseline: TextBaseline.alphabetic,
+                          children: [
+                            Text(
+                              weight.toString(),
+                              style: kBoldText,
+                            ),
+                            Text(
+                              ' kg',
+                              style: kLabelTextStyle,
+                            )
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            FloatingActionButton(
+                              backgroundColor: Color(0xFF4C4F5E),
+                              onPressed: () {
+                                print('hi');
+                              },
+                              child: Icon(
+                                Icons.add,
+                                color: Colors.white,
+                              ),
+                            ),
+                            SizedBox(
+                              width: 10.0,
+                            ),
+                            FloatingActionButton(
+                              backgroundColor: Color(0xFF4C4F5E),
+                              onPressed: () {
+                                print('hi');
+                              },
+                              child: Icon(
+                                Icons.add,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                     colour: kActiveCardColour,
                   ),
                 ),
