@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'IconContent.dart';
 import 'ReusableCard.dart';
 import 'constats.dart';
+import 'dart:async';
 
 enum Gender {
   male,
@@ -20,6 +21,7 @@ class _InputPageState extends State<InputPage> {
   int height = 180;
   int weight = 60;
   int age = 18;
+  Timer timer;
 
   void updateColour(Gender selectedGender) {
     selectedGender == Gender.male ? toggleMale() : toggleFemale();
@@ -162,24 +164,56 @@ class _InputPageState extends State<InputPage> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            RoundIconButton(
-                              icon: FontAwesomeIcons.minus,
-                              onPress: () {
-                                setState(() {
-                                  weight--;
+                            GestureDetector(
+                              onTapDown: (TapDownDetails details) {
+                                timer = Timer.periodic(
+                                    Duration(milliseconds: 80), (t) {
+                                  setState(() {
+                                    if (weight > 0) weight--;
+                                  });
                                 });
                               },
+                              onTapUp: (TapUpDetails details) {
+                                timer.cancel();
+                              },
+                              onTapCancel: () {
+                                timer.cancel();
+                              },
+                              child: RoundIconButton(
+                                icon: FontAwesomeIcons.minus,
+                                onPress: () {
+                                  setState(() {
+                                    weight--;
+                                  });
+                                },
+                              ),
                             ),
                             SizedBox(
                               width: 10.0,
                             ),
-                            RoundIconButton(
-                              icon: FontAwesomeIcons.plus,
-                              onPress: () {
-                                setState(() {
-                                  weight++;
+                            GestureDetector(
+                              onTapDown: (TapDownDetails details) {
+                                timer = Timer.periodic(
+                                    Duration(milliseconds: 80), (t) {
+                                  setState(() {
+                                    if (weight < 180) weight++;
+                                  });
                                 });
                               },
+                              onTapUp: (TapUpDetails details) {
+                                timer.cancel();
+                              },
+                              onTapCancel: () {
+                                timer.cancel();
+                              },
+                              child: RoundIconButton(
+                                icon: FontAwesomeIcons.plus,
+                                onPress: () {
+                                  setState(() {
+                                    weight++;
+                                  });
+                                },
+                              ),
                             ),
                           ],
                         ),
