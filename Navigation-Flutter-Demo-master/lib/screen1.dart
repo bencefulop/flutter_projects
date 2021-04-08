@@ -16,6 +16,9 @@ class Screen1 extends StatelessWidget {
           onPressed: () {
             Navigator.push(
               context,
+              // in this case we're creating the route as we go,
+              // instead of using NamedRoutes.
+              // This is handy for small apps.
               MaterialPageRoute(
                 builder: (contenxt) {
                   return Screen2();
