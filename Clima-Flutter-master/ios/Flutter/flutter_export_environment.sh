@@ -1,8 +1,8 @@
 #!/bin/sh
 # This is a generated file; do not edit or check into version control.
-export "FLUTTER_ROOT=/Users/Bence/code/flutter"
-export "FLUTTER_APPLICATION_PATH=/Users/Bence/code/AndroidStudioProjects/flutter_projects/Clima-Flutter-master"
-export "FLUTTER_TARGET=/Users/Bence/code/AndroidStudioProjects/flutter_projects/Clima-Flutter-master/lib/main.dart"
+export "FLUTTER_ROOT=/Users/bencefulop/Code/flutter"
+export "FLUTTER_APPLICATION_PATH=/Users/bencefulop/Code/AndroidStudioProjects/Clima-Flutter-master"
+export "FLUTTER_TARGET=/Users/bencefulop/Code/AndroidStudioProjects/Clima-Flutter-master/lib/main.dart"
 export "FLUTTER_BUILD_DIR=build"
 export "SYMROOT=${SOURCE_ROOT}/../build/ios"
 export "FLUTTER_BUILD_NAME=1.0.0"
@@ -11,4 +11,4 @@ export "DART_DEFINES=flutter.inspector.structuredErrors%3Dtrue"
 export "DART_OBFUSCATION=false"
 export "TRACK_WIDGET_CREATION=true"
 export "TREE_SHAKE_ICONS=false"
-export "PACKAGE_CONFIG=/Users/Bence/code/AndroidStudioProjects/flutter_projects/Clima-Flutter-master/.dart_tool/package_config.json"
+export "PACKAGE_CONFIG=/Users/bencefulop/Code/AndroidStudioProjects/Clima-Flutter-master/.dart_tool/package_config.json"
