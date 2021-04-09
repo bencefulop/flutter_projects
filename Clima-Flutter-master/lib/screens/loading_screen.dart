@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../services/location.dart';
-import 'package:http/http.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class LoadingScreen extends StatefulWidget {
   @override
@@ -22,15 +23,20 @@ class _LoadingScreenState extends State<LoadingScreen> {
   }
 
   void getData() async {
-    Response response = await get(Uri.https('api.openweathermap.org',
-        'data/2.5/weather?q=London,uk&APPID=c4d1e1a72352856f3b3c92dffaf18032'));
-    print('response is:');
-    print(response);
-  }
+    http.Response response = await http.get(Uri.https(
+        'api.openweathermap.org',
+        'data/2.5/weather',
+        {'q': 'London', 'appid': 'c4d1e1a72352856f3b3c92dffaf18032'}));
+    if (response.statusCode == 200) {
+      String data = response.body;
 
-//   Future<Response> fetchAlbum() {
-//   return http.get(Uri.https('jsonplaceholder.typicode.com', 'albums/1'));
-// }
+      var cityName = json.decode(data)['name'];
+
+      print(cityName);
+    } else {
+      print(response.statusCode);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
