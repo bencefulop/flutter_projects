@@ -11,8 +11,13 @@ class Networkhelper {
   final String unencodedPath;
 
   Future getData() async {
-    http.Response response = await http.get(Uri.https('$url', '$unencodedPath',
-        {'lat': '$latitude', 'lon': '$longitude', 'appid': '$apiKey'}));
+    http.Response response = await http.get(Uri.https(
+        '$url', '$unencodedPath', {
+      'lat': '$latitude',
+      'lon': '$longitude',
+      'appid': '$apiKey',
+      'units': 'metric'
+    }));
     if (response.statusCode == 200) {
       String data = response.body;
 
