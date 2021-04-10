@@ -1,4 +1,3 @@
-import 'package:clima/screens/location_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:clima/utilities/constants.dart';
 
@@ -48,7 +47,7 @@ class _CityScreenState extends State<CityScreen> {
               ),
               FlatButton(
                 onPressed: () {
-                  Navigator.pop(context);
+                  Navigator.pop(context, cityName);
                 },
                 child: Text(
                   'Get Weather',
