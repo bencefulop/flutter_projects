@@ -1,11 +1,12 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import '../price_screen.dart';
+// import '../price_screen.dart';
 
-const apiKey = '5FEA4772-36C2-4489-A7FF-BD15604F62A3';
+// const apiKey = '5FEA4772-36C2-4489-A7FF-BD15604F62A3'; // personal email
+const apiKey = 'F1AD2334-6205-48D9-8AB6-B44CC1CDD3B7';
 
 class ApiHandler {
-  Future getExchangeRate() async {
+  Future getExchangeRate(selectedCurrency) async {
     http.Response response = await http.get(
       Uri.https(
         'rest.coinapi.io',
@@ -17,10 +18,14 @@ class ApiHandler {
       String data = response.body;
 
       double exchangeRate = json.decode(data)['rate'];
-      // print(exchangeRate);
+      print(exchangeRate);
       return exchangeRate;
     } else {
-      print(response.statusCode);
+      double exchangeRate = 2.9;
+      // print(response.statusCode);
+      // print(response.body);
+      // print(exchangeRate);
+      return exchangeRate;
     }
   }
 }

@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'coin_data.dart';
 import 'services/api_handler.dart';
 import 'constants/constants.dart';
 import 'package:flutter/cupertino.dart';
+import 'dart:io';
 import 'dart:io' show Platform;
 
 class PriceScreen extends StatefulWidget {
@@ -10,7 +13,7 @@ class PriceScreen extends StatefulWidget {
   _PriceScreenState createState() => _PriceScreenState();
 }
 
-String selectedCurrency = 'USD';
+String selectedCurrency = 'AUD';
 String displayedExchangeRate;
 
 class _PriceScreenState extends State<PriceScreen> {
@@ -52,9 +55,11 @@ class _PriceScreenState extends State<PriceScreen> {
       itemExtent: 32.0,
       onSelectedItemChanged: (value) {
         setState(() {
+          sleep(Duration(seconds: 5));
           selectedCurrency = currenciesList[value];
+          print(selectedCurrency);
+          updateTextUI();
         });
-        print(currenciesList[value]);
       },
       children: pickerItems,
     );
@@ -71,14 +76,12 @@ class _PriceScreenState extends State<PriceScreen> {
 
   Future displayExchangeRate() async {
     ApiHandler apiHandler = ApiHandler();
-    double exchangeRate = await apiHandler.getExchangeRate();
-    setState(() {
-      displayedExchangeRate = exchangeRate.toStringAsFixed(2);
-      textUI();
-    });
+    double exchangeRate = await apiHandler.getExchangeRate(selectedCurrency);
+    return exchangeRate;
   }
 
-  Widget textUI() {
+  Widget updateTextUI() {
+    displayExchangeRate();
     if (displayedExchangeRate != null) {
       return Text(
         '1 BTC = $displayedExchangeRate $selectedCurrency',
@@ -96,7 +99,7 @@ class _PriceScreenState extends State<PriceScreen> {
 
   @override
   void initState() {
-    displayExchangeRate();
+    updateTextUI();
     super.initState();
   }
 
@@ -120,12 +123,7 @@ class _PriceScreenState extends State<PriceScreen> {
               ),
               child: Padding(
                 padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 28.0),
-                child: textUI(),
-                // child: Text(
-                //   '1 BTC = $displayedExchangeRate $selectedCurrency',
-                //   textAlign: TextAlign.center,
-                //   style: kExchangeRatioTextStytle,
-                // ),
+                child: updateTextUI(),
               ),
             ),
           ),
@@ -134,16 +132,7 @@ class _PriceScreenState extends State<PriceScreen> {
             alignment: Alignment.center,
             padding: EdgeInsets.only(bottom: 30.0),
             color: Colors.lightBlue,
-            // child: getPicker(),
-            // TODO delete below cupertino widget once API testing is done
-            child: CupertinoPicker(
-              backgroundColor: Colors.lightBlue,
-              itemExtent: 32.0,
-              onSelectedItemChanged: (selectedIndex) {
-                print(selectedIndex);
-              },
-              children: [Text(selectedCurrency)],
-            ),
+            child: getPicker(),
           ),
         ],
       ),
