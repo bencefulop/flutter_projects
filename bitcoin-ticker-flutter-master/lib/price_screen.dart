@@ -74,7 +74,24 @@ class _PriceScreenState extends State<PriceScreen> {
     double exchangeRate = await apiHandler.getExchangeRate();
     setState(() {
       displayedExchangeRate = exchangeRate.toStringAsFixed(2);
+      textUI();
     });
+  }
+
+  Widget textUI() {
+    if (displayedExchangeRate != null) {
+      return Text(
+        '1 BTC = $displayedExchangeRate $selectedCurrency',
+        textAlign: TextAlign.center,
+        style: kExchangeRatioTextStytle,
+      );
+    } else {
+      return Text(
+        '1 BTC = loading... $selectedCurrency',
+        textAlign: TextAlign.center,
+        style: kExchangeRatioTextStytle,
+      );
+    }
   }
 
   @override
@@ -103,11 +120,12 @@ class _PriceScreenState extends State<PriceScreen> {
               ),
               child: Padding(
                 padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 28.0),
-                child: Text(
-                  '1 BTC = $displayedExchangeRate $selectedCurrency',
-                  textAlign: TextAlign.center,
-                  style: kExchangeRatioTextStytle,
-                ),
+                child: textUI(),
+                // child: Text(
+                //   '1 BTC = $displayedExchangeRate $selectedCurrency',
+                //   textAlign: TextAlign.center,
+                //   style: kExchangeRatioTextStytle,
+                // ),
               ),
             ),
           ),
