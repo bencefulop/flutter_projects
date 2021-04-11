@@ -11,6 +11,7 @@ class PriceScreen extends StatefulWidget {
 }
 
 String selectedCurrency = 'USD';
+String displayedExchangeRate;
 
 class _PriceScreenState extends State<PriceScreen> {
   Widget getCurrencyItemsForAndroid() {
@@ -68,9 +69,22 @@ class _PriceScreenState extends State<PriceScreen> {
     }
   }
 
+  Future displayExchangeRate() async {
+    ApiHandler apiHandler = ApiHandler();
+    double exchangeRate = await apiHandler.getExchangeRate();
+    setState(() {
+      displayedExchangeRate = exchangeRate.toStringAsFixed(2);
+    });
+  }
+
+  @override
+  void initState() {
+    displayExchangeRate();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    ApiHandler().getExchangeRate();
     return Scaffold(
       appBar: AppBar(
         title: Text('🤑 Coin Ticker'),
@@ -90,7 +104,7 @@ class _PriceScreenState extends State<PriceScreen> {
               child: Padding(
                 padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 28.0),
                 child: Text(
-                  '1 BTC = ? $selectedCurrency',
+                  '1 BTC = $displayedExchangeRate $selectedCurrency',
                   textAlign: TextAlign.center,
                   style: kExchangeRatioTextStytle,
                 ),

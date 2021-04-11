@@ -16,7 +16,9 @@ class ApiHandler {
     if (response.statusCode == 200) {
       String data = response.body;
 
-      return json.decode(data)['rate'];
+      double exchangeRate = json.decode(data)['rate'];
+      // print(exchangeRate);
+      return exchangeRate;
     } else {
       print(response.statusCode);
     }
