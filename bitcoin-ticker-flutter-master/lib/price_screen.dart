@@ -1,22 +1,28 @@
 import 'dart:async';
-
+import 'services/api_handler.dart';
 import 'package:flutter/material.dart';
 import 'coin_data.dart';
-import 'services/api_handler.dart';
+import 'services/exchange.dart';
 import 'constants/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'dart:io';
 import 'dart:io' show Platform;
 
 class PriceScreen extends StatefulWidget {
+  PriceScreen({this.displayedExchangeRate});
+
+  final displayedExchangeRate;
+
   @override
   _PriceScreenState createState() => _PriceScreenState();
 }
 
-String selectedCurrency = 'AUD';
-String displayedExchangeRate;
-
 class _PriceScreenState extends State<PriceScreen> {
+  ExchangeModel exchangeModel = ExchangeModel();
+
+  String selectedCurrency = 'AUD';
+  String displayedExchangeRate;
+
   Widget getCurrencyItemsForAndroid() {
     List<DropdownMenuItem<String>> dropdownItems = [];
 
@@ -53,13 +59,11 @@ class _PriceScreenState extends State<PriceScreen> {
     return CupertinoPicker(
       backgroundColor: Colors.lightBlue,
       itemExtent: 32.0,
-      onSelectedItemChanged: (value) {
-        setState(() {
-          sleep(Duration(seconds: 5));
-          selectedCurrency = currenciesList[value];
-          print(selectedCurrency);
-          updateTextUI();
-        });
+      onSelectedItemChanged: (value) async {
+        var exchangeData =
+            await exchangeModel.getExchangeRate(currenciesList[value]);
+        selectedCurrency = currenciesList[value];
+        updateTextUI(exchangeData);
       },
       children: pickerItems,
     );
@@ -74,37 +78,27 @@ class _PriceScreenState extends State<PriceScreen> {
     }
   }
 
-  Future displayExchangeRate() async {
-    ApiHandler apiHandler = ApiHandler();
-    double exchangeRate = await apiHandler.getExchangeRate(selectedCurrency);
-    return exchangeRate;
-  }
-
-  Widget updateTextUI() {
-    displayExchangeRate();
-    if (displayedExchangeRate != null) {
-      return Text(
-        '1 BTC = $displayedExchangeRate $selectedCurrency',
-        textAlign: TextAlign.center,
-        style: kExchangeRatioTextStytle,
-      );
-    } else {
-      return Text(
-        '1 BTC = loading... $selectedCurrency',
-        textAlign: TextAlign.center,
-        style: kExchangeRatioTextStytle,
-      );
-    }
+  void updateTextUI(dynamic exchnageRateData) {
+    setState(() {
+      if (exchnageRateData == null) {
+        displayedExchangeRate = 'loading...';
+      } else {
+        print(exchnageRateData);
+        displayedExchangeRate = exchnageRateData;
+      }
+    });
   }
 
   @override
   void initState() {
-    updateTextUI();
+    updateTextUI(widget.displayedExchangeRate);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    // ApiHandler().getExchangeRate(selectedCurrency);
+    // ExchangeModel().getExchangeRate(selectedCurrency);
     return Scaffold(
       appBar: AppBar(
         title: Text('🤑 Coin Ticker'),
@@ -123,7 +117,11 @@ class _PriceScreenState extends State<PriceScreen> {
               ),
               child: Padding(
                 padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 28.0),
-                child: updateTextUI(),
+                child: Text(
+                  '1 BTC = $displayedExchangeRate $selectedCurrency',
+                  textAlign: TextAlign.center,
+                  style: kExchangeRatioTextStytle,
+                ),
               ),
             ),
           ),
