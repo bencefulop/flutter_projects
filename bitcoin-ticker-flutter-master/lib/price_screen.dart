@@ -10,7 +10,6 @@ import 'dart:io' show Platform;
 
 class PriceScreen extends StatefulWidget {
   PriceScreen({this.displayedExchangeRate});
-
   final displayedExchangeRate;
 
   @override
@@ -21,7 +20,12 @@ class _PriceScreenState extends State<PriceScreen> {
   ExchangeModel exchangeModel = ExchangeModel();
 
   String selectedCurrency = 'AUD';
-  String displayedExchangeRate;
+  String displayedExchangeRate = 'loading...';
+
+  void initialUiUpdate(String currency) async {
+    var exchangeData = await exchangeModel.getExchangeRate(currency);
+    updateTextUI(exchangeData);
+  }
 
   Widget getCurrencyItemsForAndroid() {
     List<DropdownMenuItem<String>> dropdownItems = [];
@@ -91,14 +95,12 @@ class _PriceScreenState extends State<PriceScreen> {
 
   @override
   void initState() {
-    updateTextUI(widget.displayedExchangeRate);
+    initialUiUpdate(selectedCurrency);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    // ApiHandler().getExchangeRate(selectedCurrency);
-    // ExchangeModel().getExchangeRate(selectedCurrency);
     return Scaffold(
       appBar: AppBar(
         title: Text('🤑 Coin Ticker'),
