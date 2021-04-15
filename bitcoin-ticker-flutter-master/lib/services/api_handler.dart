@@ -5,11 +5,11 @@ import 'dart:convert';
 const apiKey = 'F1AD2334-6205-48D9-8AB6-B44CC1CDD3B7';
 
 class ApiHandler {
-  Future getExchangeRate(selectedCurrency) async {
+  Future getExchangeRate(selectedCrypto, selectedCurrency) async {
     http.Response response = await http.get(
       Uri.https(
         'rest.coinapi.io',
-        'v1/exchangerate/BTC/$selectedCurrency',
+        'v1/exchangerate/$selectedCrypto/$selectedCurrency',
         {'apikey': '$apiKey'},
       ),
     );

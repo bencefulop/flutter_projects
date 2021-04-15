@@ -9,9 +9,6 @@ import 'dart:io';
 import 'dart:io' show Platform;
 
 class PriceScreen extends StatefulWidget {
-  PriceScreen({this.displayedExchangeRate});
-  final displayedExchangeRate;
-
   @override
   _PriceScreenState createState() => _PriceScreenState();
 }
@@ -20,11 +17,54 @@ class _PriceScreenState extends State<PriceScreen> {
   ExchangeModel exchangeModel = ExchangeModel();
 
   String selectedCurrency = 'AUD';
-  String displayedExchangeRate = 'loading...';
+  String displayedBTCExchangeRate = 'loading...';
+  String displayedETHExchangeRate = 'loading...';
+  String displayedLTCExchangeRate = 'loading...';
 
-  void initialUiUpdate(String currency) async {
-    var exchangeData = await exchangeModel.getExchangeRate(currency);
-    updateTextUI(exchangeData);
+  void initialUiUpdate(String crypto, String currency) async {
+    var exchangeData = await exchangeModel.getExchangeRate(crypto, currency);
+    updateTextUI(crypto, exchangeData);
+  }
+
+  void updateTextUI(String crypto, dynamic exchnageRateData) {
+    switch (crypto) {
+      case 'BTC':
+        {
+          setState(() {
+            if (exchnageRateData == null) {
+              displayedBTCExchangeRate = 'loading...';
+            } else {
+              print(exchnageRateData);
+              displayedBTCExchangeRate = exchnageRateData;
+            }
+          });
+        }
+        break;
+      case 'ETH':
+        {
+          setState(() {
+            if (exchnageRateData == null) {
+              displayedETHExchangeRate = 'loading...';
+            } else {
+              print(exchnageRateData);
+              displayedETHExchangeRate = exchnageRateData;
+            }
+          });
+        }
+        break;
+      case 'LTC':
+        {
+          setState(() {
+            if (exchnageRateData == null) {
+              displayedLTCExchangeRate = 'loading...';
+            } else {
+              print(exchnageRateData);
+              displayedLTCExchangeRate = exchnageRateData;
+            }
+          });
+        }
+        break;
+    }
   }
 
   Widget getCurrencyItemsForAndroid() {
@@ -64,10 +104,16 @@ class _PriceScreenState extends State<PriceScreen> {
       backgroundColor: Colors.lightBlue,
       itemExtent: 32.0,
       onSelectedItemChanged: (value) async {
-        var exchangeData =
-            await exchangeModel.getExchangeRate(currenciesList[value]);
         selectedCurrency = currenciesList[value];
-        updateTextUI(exchangeData);
+        var exchangeDataBTC =
+            await exchangeModel.getExchangeRate('BTC', currenciesList[value]);
+        var exchangeDataETH =
+            await exchangeModel.getExchangeRate('ETH', currenciesList[value]);
+        var exchangeDataLTC =
+            await exchangeModel.getExchangeRate('LTC', currenciesList[value]);
+        updateTextUI('BTC', exchangeDataBTC);
+        updateTextUI('ETH', exchangeDataETH);
+        updateTextUI('LTC', exchangeDataLTC);
       },
       children: pickerItems,
     );
@@ -82,20 +128,11 @@ class _PriceScreenState extends State<PriceScreen> {
     }
   }
 
-  void updateTextUI(dynamic exchnageRateData) {
-    setState(() {
-      if (exchnageRateData == null) {
-        displayedExchangeRate = 'loading...';
-      } else {
-        print(exchnageRateData);
-        displayedExchangeRate = exchnageRateData;
-      }
-    });
-  }
-
   @override
   void initState() {
-    initialUiUpdate(selectedCurrency);
+    initialUiUpdate('BTC', selectedCurrency);
+    initialUiUpdate('ETH', selectedCurrency);
+    initialUiUpdate('LTC', selectedCurrency);
     super.initState();
   }
 
@@ -120,7 +157,43 @@ class _PriceScreenState extends State<PriceScreen> {
               child: Padding(
                 padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 28.0),
                 child: Text(
-                  '1 BTC = $displayedExchangeRate $selectedCurrency',
+                  '1 BTC = $displayedBTCExchangeRate $selectedCurrency',
+                  textAlign: TextAlign.center,
+                  style: kExchangeRatioTextStytle,
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.fromLTRB(18.0, 18.0, 18.0, 0),
+            child: Card(
+              color: Colors.lightBlueAccent,
+              elevation: 5.0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 28.0),
+                child: Text(
+                  '1 ETH = $displayedETHExchangeRate $selectedCurrency',
+                  textAlign: TextAlign.center,
+                  style: kExchangeRatioTextStytle,
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.fromLTRB(18.0, 18.0, 18.0, 0),
+            child: Card(
+              color: Colors.lightBlueAccent,
+              elevation: 5.0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 28.0),
+                child: Text(
+                  '1 LTC = $displayedLTCExchangeRate $selectedCurrency',
                   textAlign: TextAlign.center,
                   style: kExchangeRatioTextStytle,
                 ),
