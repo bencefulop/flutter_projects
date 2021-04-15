@@ -34,7 +34,6 @@ class _PriceScreenState extends State<PriceScreen> {
             if (exchnageRateData == null) {
               displayedBTCExchangeRate = 'loading...';
             } else {
-              print(exchnageRateData);
               displayedBTCExchangeRate = exchnageRateData;
             }
           });
@@ -46,7 +45,6 @@ class _PriceScreenState extends State<PriceScreen> {
             if (exchnageRateData == null) {
               displayedETHExchangeRate = 'loading...';
             } else {
-              print(exchnageRateData);
               displayedETHExchangeRate = exchnageRateData;
             }
           });
@@ -58,13 +56,18 @@ class _PriceScreenState extends State<PriceScreen> {
             if (exchnageRateData == null) {
               displayedLTCExchangeRate = 'loading...';
             } else {
-              print(exchnageRateData);
               displayedLTCExchangeRate = exchnageRateData;
             }
           });
         }
         break;
     }
+  }
+
+  void updateAllCards(exchangeDataBTC, exchangeDataETH, exchangeDataLTC) {
+    updateTextUI('BTC', exchangeDataBTC);
+    updateTextUI('ETH', exchangeDataETH);
+    updateTextUI('LTC', exchangeDataLTC);
   }
 
   Widget getCurrencyItemsForAndroid() {
@@ -80,11 +83,18 @@ class _PriceScreenState extends State<PriceScreen> {
     return DropdownButton<String>(
       value: selectedCurrency,
       items: dropdownItems,
-      onChanged: (value) {
+      onChanged: (value) async {
         setState(() {
           selectedCurrency = value;
+          displayedBTCExchangeRate = 'loading...';
+          displayedETHExchangeRate = 'loading...';
+          displayedLTCExchangeRate = 'loading...';
         });
-        print(value);
+
+        var exchangeDataBTC = await exchangeModel.getExchangeRate('BTC', value);
+        var exchangeDataETH = await exchangeModel.getExchangeRate('ETH', value);
+        var exchangeDataLTC = await exchangeModel.getExchangeRate('LTC', value);
+        updateAllCards(exchangeDataBTC, exchangeDataETH, exchangeDataLTC);
       },
     );
   }
@@ -104,6 +114,11 @@ class _PriceScreenState extends State<PriceScreen> {
       backgroundColor: Colors.lightBlue,
       itemExtent: 32.0,
       onSelectedItemChanged: (value) async {
+        setState(() {
+          displayedBTCExchangeRate = 'loading...';
+          displayedETHExchangeRate = 'loading...';
+          displayedLTCExchangeRate = 'loading...';
+        });
         selectedCurrency = currenciesList[value];
         var exchangeDataBTC =
             await exchangeModel.getExchangeRate('BTC', currenciesList[value]);
@@ -111,9 +126,7 @@ class _PriceScreenState extends State<PriceScreen> {
             await exchangeModel.getExchangeRate('ETH', currenciesList[value]);
         var exchangeDataLTC =
             await exchangeModel.getExchangeRate('LTC', currenciesList[value]);
-        updateTextUI('BTC', exchangeDataBTC);
-        updateTextUI('ETH', exchangeDataETH);
-        updateTextUI('LTC', exchangeDataLTC);
+        updateAllCards(exchangeDataBTC, exchangeDataETH, exchangeDataLTC);
       },
       children: pickerItems,
     );

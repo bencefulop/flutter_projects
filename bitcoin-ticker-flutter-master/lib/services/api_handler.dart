@@ -1,8 +1,8 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-// const apiKey = '5FEA4772-36C2-4489-A7FF-BD15604F62A3'; // personal email
-const apiKey = 'F1AD2334-6205-48D9-8AB6-B44CC1CDD3B7';
+const apiKey = '5FEA4772-36C2-4489-A7FF-BD15604F62A3'; // personal email
+// const apiKey = 'F1AD2334-6205-48D9-8AB6-B44CC1CDD3B7';
 
 class ApiHandler {
   Future getExchangeRate(selectedCrypto, selectedCurrency) async {
